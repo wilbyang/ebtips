@@ -10,13 +10,15 @@ var express = require('express')
   , nconf = require('nconf')
   , path = require('path')
   , everyauth = require('everyauth')
-  , mongoose = require('mongoose')
   , Recaptcha = require('recaptcha').Recaptcha;
+var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/kongfu');
+var ObjectId = mongoose.Types.ObjectId;
 var Schema = mongoose.Schema;
 var HealthTip = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
+    tag: [String],
     added: Date,
     modified: Date,
     author: Schema.ObjectId,
@@ -42,6 +44,7 @@ HealthTip.path("added").default(function(){
 
 var HealthTipModel = mongoose.model('HealthTip', HealthTip);
 var HTipFeedbackModel = mongoose.model('HTipFeedback', HTipFeedback);
+var UserModel = mongoose.model('User', User);
 /**
 * CONFIGURATION
 * -------------------------------------------------------------------------------------------------
@@ -49,118 +52,6 @@ var HTipFeedbackModel = mongoose.model('HTipFeedback', HTipFeedback);
 * settings.example.json.  
 **/
 nconf.env().file({ file: 'settings.json' });
-
-
-
-/**
-* EVERYAUTH AUTHENTICATION
-* -------------------------------------------------------------------------------------------------
-* allows users to log in and register using OAuth services
-**/
-
-everyauth.debug = true;
-
-// Configure local password auth
-var usersById = {},
-    nextUserId = 0,
-    usersByFacebookId = {},
-    usersByTwitId = {},
-    usersByLogin = {
-        'user@example.com': addUser({ email: 'user@example.com', password: 'azure' })
-    };
-
-everyauth.
-    everymodule.
-    findUserById(function (id, callback) {
-        callback(null, usersById[id]);
-    });
-
-
-
-
-everyauth
-  .password
-    .loginWith('email')
-    .getLoginPath('/login')
-    .postLoginPath('/login')
-    .loginView('account/login')
-    .loginLocals(function (req, res, done) {
-        setTimeout(function () {
-            done(null, {
-                title: 'login.  '
-            });
-        }, 200);
-    })
-    .authenticate(function (login, password) {
-        var errors = [];
-        if (!login) errors.push('Missing login');
-        if (!password) errors.push('Missing password');
-        if (errors.length) return errors;
-        var user = usersByLogin[login];
-        if (!user) return ['Login failed'];
-        if (user.password !== password) return ['Login failed'];
-        return user;
-    })
-    .getRegisterPath('/register')
-    .postRegisterPath('/register')
-    .registerView('account/register')
-    .registerLocals(function (req, res, done) {
-        setTimeout(function () {
-            done(null, {
-                title: 'Register.  ',
-                recaptcha_form: (new Recaptcha(nconf.get('recaptcha:publicKey'), nconf.get('recaptcha:privateKey'))).toHTML()
-            });
-        }, 200);
-    })
-    .extractExtraRegistrationParams(function (req) {
-        return {
-            confirmPassword: req.body.confirmPassword,
-            data: {
-                remoteip: req.connection.remoteAddress,
-                challenge: req.body.recaptcha_challenge_field,
-                response: req.body.recaptcha_response_field
-            }
-        }
-    })
-    .validateRegistration(function (newUserAttrs, errors) {
-        var login = newUserAttrs.login;
-        var confirmPassword = newUserAttrs.confirmPassword;
-        if (!confirmPassword) errors.push('Missing password confirmation')
-        if (newUserAttrs.password != confirmPassword) errors.push('Passwords must match');
-        if (usersByLogin[login]) errors.push('Login already taken');
-
-        // validate the recaptcha 
-        var recaptcha = new Recaptcha(nconf.get('recaptcha:publicKey'), nconf.get('recaptcha:privateKey'), newUserAttrs.data);
-        recaptcha.verify(function (success, error_code) {
-            if (!success) {
-                errors.push('Invalid recaptcha - please try again');
-            }
-        });
-        return errors;
-    })
-    .registerUser(function (newUserAttrs) {
-        var login = newUserAttrs[this.loginKey()];
-        return usersByLogin[login] = addUser(newUserAttrs);
-    })
-    .loginSuccessRedirect('/')
-    .registerSuccessRedirect('/');
-
-// add a user to the in memory store of users.  If you were looking to use a persistent store, this
-// would be the place to start
-function addUser(source, sourceUser) {
-    var user;
-    if (arguments.length === 1) {
-        user = sourceUser = source;
-        user.id = ++nextUserId;
-        return usersById[nextUserId] = user;
-    } else { // non-password-based
-        user = usersById[++nextUserId] = { id: nextUserId };
-        user[source] = sourceUser;
-    }
-    return user;
-}
-
-
 
 var app = express();
 app.configure(function () {
@@ -199,23 +90,51 @@ app.post('/api/products', function (req, res) {
 
 app.get('/api/healthtips', function (req, res) {
     return HealthTipModel.find(function (error, healthTips) {
-        console.log(healthTips);
         if (!error) {
             return res.send(healthTips);
         }
     });
 });
 
-
-app.get('api/:htip/feedback', function (res, res) {
-    return HTipFeedbackModel.find({}, function(){
-
+app.get('/api/healthtips/:htip', function (req, res) {
+    return HealthTipModel.find({"_id" : new ObjectId(req.params.htip)}, function (error, healthTip) {
+        if (!error) {
+            return res.send(healthTip);
+        }
     });
 });
-app.post('api/:htip/feedback', function (res, res) {
-    return HTipFeedbackModel.find({}, function(){
-        
+app.get('/api/:htip/feedback', function (req, res) {
+    return HealthTipModel.find({"_id" : new ObjectId(req.params.htip)}, function(error, healthTip) {
+        if (!error) {
+            return HTipFeedbackModel.find({"healthTip": healthTip._id}, function(error, hFeedback) {
+                if (!error) {
+                    return res.send(hFeedback);
+                }
+            });
+        }
     });
+});
+app.post('/api/:htip/feedback', function(req, res) {
+    return HealthTipModel.find({"_id" : new ObjectId(req.params.htip)}, function(error, healthTip) {
+        if (!error) {
+            var hTipFeedback = new HTipFeedbackModel({healthTip: healthTip._id, type: req.body.type, comment: req.body.comment});
+            hTipFeedback.save();
+            return res.send(hTipFeedback);
+        }
+    });
+    /*
+    console.log(req.body);
+    var healthTip = HealthTipModel.find({"_id" : new ObjectId(req.params.htip)});
+    if (healthTip._id) {
+        var hTipFeedback = new HTipFeedbackModel({
+            type: req.body.type,
+            comment: req.body.comment,
+            healthTip: healthTip._id
+        });
+        hTipFeedback.save();
+        return res.send(hTipFeedback);
+    }
+    */
 });
 /**
 * ROUTING
@@ -228,51 +147,6 @@ require('./routes/account')(app);
 
 var server = http.createServer(app);
 
-
-/**
-* CHAT / SOCKET.IO 
-* -------------------------------------------------------------------------------------------------
-* this shows a basic example of using socket.io to orchestrate chat
-**/
-
-// socket.io configuration
-var buffer = [];
-var io = require('socket.io').listen(server);
-
-
-io.configure(function () {
-    io.set("transports", ["xhr-polling"]);
-    io.set("polling duration", 100);
-});
-
-io.sockets.on('connection', function (socket) {
-    socket.emit('messages', { buffer: buffer });
-    socket.on('setname', function (name) {
-        socket.set('name', name, function () {
-            socket.broadcast.emit('announcement', { announcement: name + ' connected' });
-        });
-    });
-    socket.on('message', function (message) {
-        socket.get('name', function (err, name) {
-            var msg = { message: [name, message] };
-            buffer.push(msg);
-            if (buffer.length > 15) buffer.shift();
-            socket.broadcast.emit('message', msg);
-        })
-    });
-    socket.on('disconnect', function () {
-        socket.get('name', function (err, name) {
-            socket.broadcast.emit('announcement', { announcement: name + ' disconnected' });
-        })
-    })
-});
-
-
-/**
-* RUN
-* -------------------------------------------------------------------------------------------------
-* this starts up the server on the given port
-**/
 
 server.listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
