@@ -1,1 +1,110 @@
-<p>This is the partial for view 1.</p>
+<!-- <p>This is the partial for view 1.</p> -->
+
+<div id="left">
+	<div id="header">
+		<a href="#" class="logo">&nbsp;</a>
+	</div>
+	<div id="filter">
+		<ul class="control">
+			<li><a href="#">全部</a></li>
+			<li><a href="#">话题</a></li>
+			<li><a href="#">用户</a></li>
+		</ul>
+	</div>
+	<div id="nav-container">
+
+		<ul class="list-group all">
+			<li ng-repeat="entry in entries" 
+					ng-click="setEntry(entry)"
+					class="list-group-item">
+				<a href="" 
+					 ng-click="itemClicked($index)"
+					 ng-class="{ 'current': $index == selectedIndex }">
+					<h2>{{entry.2}}</h2>
+					<p>
+						<strong>{{entry.0}}</strong>
+						<span>{{entry.1}}</span>
+					</p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+			<li class="list-group-item">
+				<a href="#">
+					<h2>有没有把 Mac 当作主机，iPhone 当作控制设备的游戏？</h2>
+					<p><strong>usrname</strong><span>desription</span></p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+			<li class="list-group-item">
+				<a href="#">
+					<h2>Cras justo odio</h2>
+					<p><strong>usrname</strong><span>desription</span></p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+			<li class="list-group-item">
+				<a href="#">
+					<h2>Cras justo odio</h2>
+					<p><strong>usrname</strong><span>desription</span></p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+			<li class="list-group-item">
+				<a href="#">
+					<h2>Cras justo odio</h2>
+					<p><strong>usrname</strong><span>desription</span></p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+			<li class="list-group-item">
+				<a href="#">
+					<h2>Cras justo odio</h2>
+					<p><strong>usrname</strong><span>desription</span></p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+			<li class="list-group-item">
+				<a href="#">
+					<h2>Cras justo odio</h2>
+					<p><strong>usrname</strong><span>desription</span></p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+			<li class="list-group-item">
+				<a href="#">
+					<h2>Cras justo odio</h2>
+					<p><strong>usrname</strong><span>desription</span></p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+			<li class="list-group-item">
+				<a href="#" class="current">
+					<h2>Cras justo odio</h2>
+					<p><strong>usrname</strong><span>desription</span></p>
+					<span class="badge">14</span>
+				</a>
+			</li>
+		</ul>
+
+	</div>
+</div>
+
+<div id="right">
+	<div id="right-header">
+		<span>something</span>
+		<span class="more">more</span>
+	</div>
+	<div id="content">
+		<h1 class="entry-title">
+			{{title}}
+		</h1>
+		<div class="entry">
+			<div class="entry-info">{{author}}</div>
+			<div class="entry-body">
+				{{content}}
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script src="js/partial1.js"></script>

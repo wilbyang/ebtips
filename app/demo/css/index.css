@@ -1,6 +1,7 @@
 body, html {
   /*height: 100%;*/
   /*overflow: hidden;*/
+  font: 13px/22px 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, 'Hiragino Sans GB', sans-serif;
 }
 
 #container {
@@ -61,8 +62,40 @@ body, html {
 }
 
 #left #nav-container a {
+  background: #F4F4F4;
+  border-top: 1px solid white;
+  border-bottom: 1px solid #AEB7BF;
+  padding: 8px 35px 8px 10px;
+  cursor: pointer;
+  position: relative;
+  min-height: 67px;
   display: block;
   text-decoration: none;
+}
+
+.list-group-item {
+  padding: 0;
+}
+
+/* overwrite */
+.list-group-item:first-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0; 
+}
+
+/* overwrite */
+.badge {
+  position: absolute;
+  right: 10px;
+  top: 32px;
+}
+
+#left #nav-container a.current {
+  background: #D8E0E6;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1) inset;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1) inset;
 }
 
 #left #nav-container h2 {
@@ -74,6 +107,14 @@ body, html {
 
 #left #nav-container p {
   margin: 5px 0 0 0;
+}
+
+#left #nav-container p strong {
+  color: #777;
+}
+
+#left #nav-container p span {
+  color: #AAA;
 }
 
 #left #nav-container p span::before {
@@ -126,6 +167,7 @@ body, html {
 }
 
 .entry-body {
+  font-size: 15px;
   padding: 15px;
   border: 1px solid #C5CACE;
   background: #F7F7F7;
