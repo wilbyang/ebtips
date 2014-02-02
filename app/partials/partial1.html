@@ -100,8 +100,8 @@
 		</h1>
 		<div class="entry">
 			<div class="entry-info">{{author}}</div>
-			<div class="entry-body">
-				{{content}}
+			<div ng-bind-html="content" class="entry-body">
+				<!-- {{content}} -->
 			</div>
 		</div>
 	</div>
