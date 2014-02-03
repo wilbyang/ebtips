@@ -14,10 +14,10 @@
 
 <div>
   <div infinite-scroll='reddit.nextPage()'
-       infinite-scroll-disabled='reddit.busy' 
-       infinite-scroll-distance='1'>
+  infinite-scroll-disabled='reddit.busy' 
+  infinite-scroll-distance='1'>
     <div ng-repeat='item in reddit.items'
-         style="border-bottom: 1px solid;">
+    style="border-bottom: 1px solid;">
       <span class='score'>{{item.score}}</span>
       <span class='title'>
         <a ng-href='{{item.url}}' target='_blank'>{{item.title}}</a>
@@ -26,8 +26,8 @@
       <small ng-click="itemClicked($index)">
         by {{item.author}} -
         <a ng-href='http://reddit.com{{item.permalink}}' 
-           target='_blank'>
-           {{item.num_comments}} comments
+        target='_blank'>
+        {{item.num_comments}} comments
         </a>
       </small>
       <div style='clear: both;'></div>

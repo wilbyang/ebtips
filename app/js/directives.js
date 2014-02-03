@@ -13,8 +13,8 @@ angular.module('myApp.directives', []).
   	return {
   		restrict: 'E',
   		scope: {
-  			contentInfo: '=info'
+  			content: '=content'
   		},
-  		templateUrl: 'partials/content.html'
+  		templateUrl: 'partials/right-pane.html'
   	};
   });
