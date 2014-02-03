@@ -1,11 +1,37 @@
-<p>This is the partial for view 2.</p>
+<!-- <p>This is the partial for view 2.</p>
 <p>
   Showing of 'interpolate' filter:
   {{ 'Current version is v%VERSION%.' | interpolate }}
 </p>
 
 <div class="healthtip-detail">
-	<!-- <span class="label label-primary">Primary</span> -->
-	<h4>{{healthtip.title}}</h4>
-	<p>{{healthtip.description}}</p>
+  <span class="label label-primary">Primary</span>
+  <h4>{{healthtip.title}}</h4>
+  <p>{{healthtip.description}}</p>
+</div> -->
+
+
+
+<div>
+  <div infinite-scroll='reddit.nextPage()'
+       infinite-scroll-disabled='reddit.busy' 
+       infinite-scroll-distance='1'>
+    <div ng-repeat='item in reddit.items'
+         style="border-bottom: 1px solid;">
+      <span class='score'>{{item.score}}</span>
+      <span class='title'>
+        <a ng-href='{{item.url}}' target='_blank'>{{item.title}}</a>
+      </span>
+      <br>
+      <small ng-click="itemClicked($index)">
+        by {{item.author}} -
+        <a ng-href='http://reddit.com{{item.permalink}}' 
+           target='_blank'>
+           {{item.num_comments}} comments
+        </a>
+      </small>
+      <div style='clear: both;'></div>
+    </div>
+    <div ng-show='reddit.busy'>Loading data...</div>
+  </div>
 </div>

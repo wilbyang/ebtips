@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', ['ngSanitize']).
+angular.module('myApp.controllers', ['ngSanitize', 'infinite-scroll']).
   controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
 
     $http.get('entries/entries.json').success(function(data) {
@@ -57,6 +57,12 @@ angular.module('myApp.controllers', ['ngSanitize']).
     // };
 
   }])
-  .controller('MyCtrl2', ['$scope', function($scope) {
+  .controller('MyCtrl2', ['$scope', 'Reddit', function($scope, Reddit) {
+    $scope.reddit = new Reddit();
 
+    $scope.itemClicked = function ($index) {
+      $scope.selectedIndex = $index;
+      console.log($index);
+      // $scope.entry = $scope.entries[$index];
+    };
   }]);
