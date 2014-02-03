@@ -19,8 +19,8 @@ angular.module('myApp.controllers', ['ngSanitize']).
         3: "Content content. Content content. Content content."
       },
       {
-        0: "usrnam",
-        1: "usrnam@bob.com",
+        0: "\u9759\u6c34\u6df1\u6d41",
+        1: "\u70ed\u7231\u7f8e\u98df\u7684\u7a0b\u5e8f\u5458\uff5e",
         2: "有没有把 Mac 当作主机，iPhone 当作控制设备的游戏？",
         3: "无论是出于道德感、同情心、或者政客对选票的争取，<b>对弱势群体的倾斜</b>往往起到反效果。<br><br>例如对待少数民族的「<a href=\"http://zh.wikipedia.org/zh-sg/%E5%85%A9%E5%B0%91%E4%B8%80%E5%AF%AC\" class=\" wrap external\" target=\"_blank\" rel=\"nofollow\">两少一宽<i class=\"icon-external\"></i></a>」政策，很大程度上加剧了民族矛盾。<br><br>又比如政府承诺提高穷人的福利保障，提供免费医疗，设定最低工资保障等等。可其实羊毛出在羊身上，富人不堪税负，干脆把企业开到海外，穷人们这下连工作都没了。<br><br>再如这条关于廉租房的讨论：<a href=\"http://www.zhihu.com/question/22588487\" class=\"internal\">茅于轼「廉租房不应该配厕所」的经济学逻辑是怎样的？</a>茅于轼为这个观点挨了多少骂？那些骂他的人，没几个是坏人，他们大多怀着善意，觉得穷人应该过上好日子。<br><br>殊不知，通往地狱的道路往往是由善意铺就的。<br><br>每当看到左翼运动（女权、少数族裔、工运、学运等等）的诉求从「平权」迈向「特权」时，我们就要警惕了。"
       }
@@ -29,19 +29,23 @@ angular.module('myApp.controllers', ['ngSanitize']).
     $scope.selectedIndex = 0;
 
     $scope.itemClicked = function ($index) {
-      // console.log($index);
       $scope.selectedIndex = $index;
+
+      $scope.author = $scope.entries[$index][0];
+      $scope.title = $scope.entries[$index][2];
+      $scope.content = $scope.entries[$index][3];
+      // console.log($index);
     }
 
     $scope.author = $scope.entries[0][0];
     $scope.title = $scope.entries[0][2];
     $scope.content = $scope.entries[0][3];
 
-    $scope.setEntry = function(entry) {
-      $scope.author = entry[0];
-      $scope.title = entry[2];
-      $scope.content = entry[3];
-    };
+    // $scope.setEntry = function(entry) {
+    //   $scope.author = entry[0];
+    //   $scope.title = entry[2];
+    //   $scope.content = entry[3];
+    // };
 
   }])
   .controller('MyCtrl2', ['$scope', function($scope) {
