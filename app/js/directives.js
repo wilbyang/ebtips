@@ -20,13 +20,22 @@ angular.module('myApp.directives', []).
   })
   .directive('myItemContainer', function() {
     return {
-      template: '<ul class="list-group all" ng-transclude></ul>',
+      template: '<ul class="list-group all" ng-transclude ng-click="showMy()"></ul>',
       restrict: 'E',
       replace: true,
       transclude: true,
       link: function(scope, elm, attrs) {
         scope.states = {};
         scope.states.selectedIndex = 0;
+
+        var elem = angular.element(elm);
+        scope.showMy = function() {
+          console.log('ul:offsettop ' + elem.offset().top);
+          console.log('ul:offsettop ul height' + elem.height());
+          console.log('ul:scrollTop ' + elem.scrollTop());
+          console.log('nav:offsettop paren: ' + elem.parent().offset().top);
+          console.log('nav:scrollTop parent: ' + elem.parent().scrollTop());
+        }
       }
     };
   })

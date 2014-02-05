@@ -12,7 +12,7 @@
 
 
 
-<div>
+<!-- <div>
   <div infinite-scroll='reddit.nextPage()'
   infinite-scroll-disabled='reddit.busy' 
   infinite-scroll-distance='1'>
@@ -33,5 +33,42 @@
       <div style='clear: both;'></div>
     </div>
     <div ng-show='reddit.busy'>Loading data...</div>
+  </div>
+</div> -->
+
+
+
+<div id="left">
+  <div id="header">
+    <a href="#" class="logo">&nbsp;</a>
+  </div>
+  <div id="filter">
+    <ul class="control">
+      <li><a href="#">全部</a></li>
+      <li><a href="#">话题</a></li>
+      <li><a href="#">用户</a></li>
+    </ul>
+  </div>
+  <div id="nav-container">
+
+    <!-- <ul class="list-group all"> -->
+    <my-item-container infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
+      <!-- <li ng-repeat="entry in entries" class="list-group-item">
+        <a href
+        ng-click="itemClicked($index, entry)"
+        ng-class="{ 'current': $index == selectedIndex }"> -->
+      <my-item ng-repeat="item in reddit.items">
+        <h2>{{item.title}}</h2>
+        <p>
+          <strong>{{item.author}}</strong>
+          <span>{{item.score}}</span>
+        </p>
+        <span class="badge">14</span>
+       <!--  </a>
+      </li> -->
+      </my-item>
+    <!-- </ul> -->
+  </my-item-container>
+  
   </div>
 </div>
