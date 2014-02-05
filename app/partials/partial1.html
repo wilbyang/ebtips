@@ -13,24 +13,28 @@
   </div>
   <div id="nav-container">
 
-    <ul class="list-group all">
-      <li ng-repeat="entry in entries" class="list-group-item">
+    <!-- <ul class="list-group all"> -->
+    <my-item-container>
+      <!-- <li ng-repeat="entry in entries" class="list-group-item">
         <a href
         ng-click="itemClicked($index, entry)"
-        ng-class="{ 'current': $index == selectedIndex }">
-          <h2>{{entry.2}}</h2>
-          <p>
-            <strong>{{entry.0}}</strong>
-            <span>{{entry.1}}</span>
-          </p>
-          <span class="badge">14</span>
-        </a>
-      </li>
-    </ul>
+        ng-class="{ 'current': $index == selectedIndex }"> -->
+      <my-item ng-repeat="entry in entries">
+        <h2>{{entry.2}}</h2>
+        <p>
+          <strong>{{entry.0}}</strong>
+          <span>{{entry.1}}</span>
+        </p>
+        <span class="badge">14</span>
+       <!--  </a>
+      </li> -->
+      </my-item>
+    <!-- </ul> -->
+  </my-item-container>
   
   </div>
 </div>
 
 <my-content content="opened"></my-content>
 
-<script src="js/partial1.js"></script>
+<!-- <script src="js/partial1.js"></script>

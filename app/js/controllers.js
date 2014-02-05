@@ -10,14 +10,15 @@ angular.module('myApp.controllers', ['ngSanitize', 'infinite-scroll']).
       $scope.opened = data[0];
     });
 
-    $scope.selectedIndex = 0;
+    // $scope.selectedIndex = 0;
 
-    $scope.itemClicked = function ($index, entry) {
-      $scope.selectedIndex = $index;
+    $scope.itemClicked = function (entry) {
+      // $scope.selectedIndex = $index;
 
       if (!$scope.isOpen(entry)) {
         $scope.opened = entry;
       };
+
     };
 
     $scope.isOpen = function(item) {
