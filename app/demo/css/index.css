@@ -9,14 +9,16 @@ body, html {
 }
 
 #left {
-  width: 320px;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
+  background-color: #E7EBEF;
   bottom: 0;
-  z-index: 10;
+  border-right: 1px solid #AEB7BF;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: fixed;
+  width: 320px;
+  z-index: 10;
 }
 
 #header {
@@ -29,11 +31,13 @@ body, html {
 
 #nav-container {
   height: 100%;
-  /*background-color: #555;*/
+  overflow-y: scroll;
+  padding-bottom: 97px;
 }
 
 .all {
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
+  margin-bottom: 0;
 }
 
 .logo {
