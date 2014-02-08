@@ -61,9 +61,10 @@ body, html {
 }
 
 #nav-container {
-  height: 100%;
-  overflow-y: scroll;
-  padding-bottom: 97px;
+  position: absolute;
+  overflow-y: auto;
+  top: 97px;
+  bottom: 0;
 }
 
 .all {

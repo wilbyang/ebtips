@@ -20,7 +20,7 @@ angular.module('myApp.directives', []).
   })
   .directive('myItemContainer', function() {
     return {
-      template: '<ul class="list-group all" ng-transclude ng-click="showMy()"></ul>',
+      templateUrl: 'partials/my-item-container.html',
       restrict: 'E',
       replace: true,
       transclude: true,

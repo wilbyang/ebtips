@@ -30,8 +30,6 @@ angular.module('myApp.controllers', ['ngSanitize', 'infinite-scroll']).
     $scope.reddit = new Reddit();
 
     $scope.itemClicked = function ($index) {
-      $scope.selectedIndex = $index;
-      console.log($index);
-      // $scope.entry = $scope.entries[$index];
+      
     };
   }]);
